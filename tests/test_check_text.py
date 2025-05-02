@@ -3,6 +3,8 @@ from components.components import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from pages.elements_page import ElementsPage
+
 
 def test_check_center_text_on_elements_page(browser):
     demo_qa_page = DemoQa(browser)
@@ -27,8 +29,15 @@ def test_check_center_text_on_elements_page(browser):
 
     assert actual_text == expected_text
 
-    def test_page_elements(browser):
-        el_page = ElementsPage(browser)
+def test_page_elements(browser):
+    el_page = ElementsPage(browser)
+    el_page.visit()
+    assert el_page.text.elements.get.text() == 'Please select an item from left to start practice.'
 
-        el_page.visit()
-        assert el_page.text.elements.get.text() == 'Please select an item from left to start practice.'
+def test_page_elements(browser):
+    el_page = ElementsPage(browser)
+    el_page.visit()
+
+    assert el_page.icon.exist()
+    assert el_page.btn_sidebar_first.exist()
+    assert el_page.btn_sidebar_first_textbox.exist()
