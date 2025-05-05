@@ -6,14 +6,17 @@ class WebElement:
         self.driver = driver
         self.locator = locator
 
-    def is_visible(self):
-        try:
-            return self.find_element().is_displayed()
-        except:
-            return False
+    # def is_visible(self):
+    #     try:
+    #         return self.find_element().is_displayed()
+    #     except:
+    #         return False
 
     def click(self):
         self.find_element().click()
+
+    def click_force(self):
+        self.driver.execute_script('arguments[0].click();', self.find_element())
 
     def find_element(self):
         return self.driver.find_element(By.CSS_SELECTOR, self.locator)
