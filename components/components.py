@@ -3,9 +3,10 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 class WebElement:
-    def __init__(self, driver, locator=''):
+    def __init__(self, driver, locator='', locator_type='css'):
         self.driver = driver
         self.locator = locator
+        self.locator_type = locator_type
 
     # def is_visible(self):
     #     try:
@@ -20,10 +21,10 @@ class WebElement:
         self.driver.execute_script('arguments[0].click();', self.find_element())
 
     def find_element(self):
-        return self.driver.find_element(By.CSS_SELECTOR, self.locator)
+        return self.driver.find_element(self.get_by_type(), self.locator)
 
     def find_elements(self):
-        return self.driver.find_elements(By.CSS_SELECTOR, self.locator)
+        return self.driver.find_elements(self.get_by_type(), self.locator)
 
     def exist(self):
         try:
@@ -49,3 +50,35 @@ class WebElement:
     def clear(self):
         self.send_keys(Keys.CONTROL + 'a')
         self.send_keys(Keys.DELETE)
+
+    def get_dom_attribute(self, name: str):
+        value = self.find_element().get_dom_attribute(name)
+
+        if value is None:
+            return False
+        if len(value) > 0:
+            return value
+        return True
+
+    def scroll_to_element(self):
+        self.driver.execute_script(
+            'window.scrollTo(0, document.body.scrollHeight);',
+            self.find_element()
+        )
+
+    def get_by_type(self):
+        if self.locator_type == 'id':
+            return By.ID
+        if self.locator_type == 'name':
+            return By.NAME
+        if self.locator_type == 'xpath':
+            return By.XPATH
+        if self.locator_type == 'css':
+            return By.CSS_SELECTOR
+        if self.locator_type == 'class':
+            return By.CLASS_NAME
+        if self.locator_type == 'link':
+            return By.LINK_TEXT
+        else:
+            print('Locator type ' + self.locator_type + ' not correct')
+        return False
