@@ -49,3 +49,7 @@ class Tables(BasePage):
             if not delete_buttons:
                 break
             delete_buttons[0].click()
+
+    def get_column_headers(self):
+
+        return self.driver.find_elements(By.CSS_SELECTOR, '.rt-th')
