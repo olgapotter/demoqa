@@ -1,8 +1,8 @@
-from selenium.webdriver.common.by import By
+import logging
 import time
+from selenium.webdriver.common.by import By
 
 class BasePage:
-
     def __init__(self, driver, base_url):
         self.driver = driver
         self.base_url = base_url
@@ -33,4 +33,11 @@ class BasePage:
         self.driver.refresh()
 
     def get_title(self):
-        self.driver.title
+        return self.driver.title
+
+    def alert(self):
+        try:
+            return self.driver.switch_to_alert
+        except Exception as ex:
+            logging.log(1, ex)
+            return False
